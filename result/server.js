@@ -1,3 +1,4 @@
+// Express + Socket.IO server for the result app: polls Postgres every second for vote counts and pushes them to connected clients.
 var express = require('express'),
     async = require('async'),
     { Pool } = require('pg'),
