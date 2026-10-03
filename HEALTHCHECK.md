@@ -109,3 +109,31 @@ Confirm it's processing votes:
 Each voter (identified by the `voter_id` cookie) has one row. Voting again with the same cookie updates that row instead of adding a new one. Repeated `curl` calls without a cookie each count as a new voter.
 
 To generate a lot of traffic at once, run the seed job: `docker compose --profile seed up -d`. It sends 3000 votes to `vote`.
+
+## redis and db
+
+`redis` (`redis:alpine`) and `db` (`postgres:15-alpine`) don't publish any ports, so you can only reach them from other containers on the `back-tier` network, or with `docker compose exec`. The `./healthchecks` directory is mounted into both containers at `/healthchecks`.
+
+Check they're running and healthy:
+
+```sh
+docker compose ps redis db   # both should show "(healthy)"
+docker inspect --format '{{.State.Health.Status}}' $(docker compose ps -q db)
+docker compose logs --tail=50 redis   # expect "Ready to accept connections"
+docker compose logs --tail=50 db      # expect "database system is ready to accept connections"
+```
+
+Run the same scripts the compose health checks use. Exit code 0 means healthy:
+
+```sh
+docker compose exec redis /healthchecks/redis.sh; echo $?
+docker compose exec db /healthchecks/postgres.sh; echo $?
+```
+
+Or check by hand. The user and password are both `postgres`, and the database defaults to `postgres`:
+
+```sh
+docker compose exec redis redis-cli ping                 # expect PONG
+docker compose exec db pg_isready -U postgres            # expect "accepting connections"
+docker compose exec db psql -U postgres -c 'SELECT 1;'
+```
