@@ -28,6 +28,11 @@ Once you have your swarm, in this directory run:
 docker stack deploy --compose-file docker-stack.yml vote
 ```
 
+## Running locally
+
+Run `docker compose up` in the repo root, then open http://localhost:8080 to vote and http://localhost:8081 to see results.
+Each service's ports are listed in [docs/PORTS.md](docs/PORTS.md).
+
 ## Run the app in Kubernetes
 
 The folder k8s-specifications contains the YAML specifications of the Voting App's services.
