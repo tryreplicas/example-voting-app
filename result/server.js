@@ -1,5 +1,4 @@
 var express = require('express'),
-    async = require('async'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
     app = express(),
@@ -21,27 +20,16 @@ var pool = new Pool({
   connectionString: 'postgres://postgres:postgres@db/postgres'
 });
 
-async.retry(
-  {times: 1000, interval: 1000},
-  function(callback) {
-    pool.connect(function(err, client, done) {
-      if (err) {
-        console.error("Waiting for db");
-      }
-      callback(err, client);
-    });
-  },
-  function(err, client) {
-    if (err) {
-      return console.error("Giving up");
-    }
-    console.log("Connected to db");
-    getVotes(client);
-  }
-);
+// Idle connections can fail when Postgres restarts. The pool removes them
+// and obtains a fresh connection on the next poll.
+pool.on('error', function(err) {
+  console.error("Database connection error: " + err);
+});
 
-function getVotes(client) {
-  client.query('SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote', [], function(err, result) {
+getVotes();
+
+function getVotes() {
+  pool.query('SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote', [], function(err, result) {
     if (err) {
       console.error("Error performing query: " + err);
     } else {
@@ -49,7 +37,7 @@ function getVotes(client) {
       io.sockets.emit("scores", JSON.stringify(votes));
     }
 
-    setTimeout(function() {getVotes(client) }, 1000);
+    setTimeout(function() {getVotes() }, 1000);
   });
 }
 
