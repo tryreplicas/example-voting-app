@@ -46,6 +46,20 @@ To remove them, run:
 kubectl delete -f k8s-specifications/
 ```
 
+## Run the tests
+
+The end-to-end test runs the `vote` and `result` apps, the `worker`, Redis, and Postgres in Docker, casts a vote, and checks that the result page shows it. Run this from the repository root:
+
+```shell
+docker compose -f result/docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from sut
+```
+
+The command exits with `0` when the test passes and `1` when it fails. To clean up the containers and the database volume afterwards, run:
+
+```shell
+docker compose -f result/docker-compose.test.yml down -v
+```
+
 ## Architecture
 
 ![Architecture diagram](architecture.excalidraw.png)
