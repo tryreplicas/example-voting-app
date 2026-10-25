@@ -14,7 +14,33 @@ Run in this directory to build and run the app:
 docker compose up
 ```
 
-The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
+Add `--build` after changing a `Dockerfile` or `requirements.txt`, so the images are rebuilt:
+
+```shell
+docker compose up --build
+```
+
+The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081). The `result` app also exposes a Node.js debugger on `127.0.0.1:9229`.
+
+The `vote` and `result` source folders are mounted into their containers, so code changes are picked up without a rebuild.
+
+To stop the app, press `Ctrl+C` (or run `docker compose down`). Votes are kept in the `db-data` volume between runs. To stop and also reset all data, run:
+
+```shell
+docker compose down -v
+```
+
+### Run only the vote app
+
+To work on the `vote` app alone, start just that service. Compose also starts Redis, which it depends on:
+
+```shell
+docker compose up vote
+```
+
+It runs at [http://localhost:8080](http://localhost:8080). Votes are queued in Redis but won't be counted, since the worker, database and `result` app aren't running. Running `vote/app.py` directly with Python isn't practical: it expects Redis at the hostname `redis` and listens on port 80.
+
+### Run on Docker Swarm
 
 Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
 
