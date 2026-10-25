@@ -5,7 +5,7 @@ from decimal import ROUND_HALF_UP, Decimal
 
 
 def format_date(d: datetime.date) -> str:
-    """Return the date as an ISO YYYY-MM-DD string."""
+    """Return the date as an ISO 8601 YYYY-MM-DD string."""
     return d.isoformat()[:10]
 
 
