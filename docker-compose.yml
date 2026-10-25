@@ -43,9 +43,6 @@ services:
   worker:
     build:
       context: ./worker
-    environment:
-      # Max consecutive failed redis connection attempts before the worker exits; 0 = retry forever
-      REDIS_MAX_RETRIES: "${REDIS_MAX_RETRIES:-0}"
     depends_on:
       redis:
         condition: service_healthy 
