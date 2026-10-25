@@ -1,3 +1,5 @@
+"""Helpers for formatting dates and amounts for display."""
+
 from decimal import ROUND_HALF_UP, Decimal
 
 
