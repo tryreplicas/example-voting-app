@@ -17,3 +17,14 @@ def format_amount(amount: float) -> str:
     return str(
         Decimal(str(amount)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     )
+
+
+def format_percent(x: float) -> str:
+    """Return x as a percentage string with one decimal place, rounding half up.
+
+    Example: 12.5 becomes "12.5%".
+    """
+    return (
+        str(Decimal(str(x)).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
+        + "%"
+    )
