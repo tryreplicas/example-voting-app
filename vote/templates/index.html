@@ -7,10 +7,24 @@
     <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
     <meta name="keywords" content="docker-compose, docker, stack">
     <meta name="author" content="Tutum dev team">
+    <script>
+      // Apply the saved (or system) theme before first paint to avoid a flash.
+      (function () {
+        var theme = null;
+        try { theme = localStorage.getItem('theme'); } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+          theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+      })();
+    </script>
     <link rel='stylesheet' href="{{ url_for('static',filename='stylesheets/style.css') }}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   </head>
   <body>
+    <button id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false">
+      <i class="fa fa-moon-o" aria-hidden="true"></i> Dark mode
+    </button>
     <div id="content-container">
       <div id="content-container-center">
         <h3>{{option_a}} vs {{option_b}}!</h3>
@@ -28,6 +42,25 @@
     </div>
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+
+        function render() {
+          var dark = root.classList.contains('dark');
+          toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
+        }
+
+        toggle.addEventListener('click', function () {
+          var dark = root.classList.toggle('dark');
+          try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+          render();
+        });
+
+        render();
+      })();
+    </script>
 
     {% if vote %}
     <script>
