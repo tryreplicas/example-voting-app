@@ -1,6 +1,6 @@
 import datetime
 
-from format import format_amount, format_date, format_percent
+from format import format_amount, format_date, format_percent, format_ratio
 
 
 def test_format_date():
@@ -16,3 +16,11 @@ def test_format_percent():
     assert format_percent(12.5) == "12.5%"
     assert format_percent(0) == "0.0%"
     assert format_percent(12.25) == "12.3%"
+
+
+def test_format_ratio():
+    assert format_ratio(4, 6) == "2:3"
+    assert format_ratio(5, 7) == "5:7"
+    assert format_ratio(3, 3) == "1:1"
+    assert format_ratio(0, 5) == "0:1"
+    assert format_ratio(0, 0) == "0:0"
