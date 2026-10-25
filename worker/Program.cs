@@ -12,8 +12,12 @@ namespace Worker
 {
     public class Program
     {
+        // Max consecutive failed redis connection attempts before exiting; 0 means retry forever
+        private static int RedisMaxRetries;
+
         public static int Main(string[] args)
         {
+            RedisMaxRetries = ReadRedisMaxRetries();
             try
             {
                 var pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
@@ -135,11 +139,31 @@ namespace Worker
                 }
                 catch (Exception ex) when (ex is SocketException || ex is InvalidOperationException || IsRedisConnectionError(ex))
                 {
+                    if (RedisMaxRetries > 0 && attempt >= RedisMaxRetries)
+                    {
+                        Console.Error.WriteLine($"Giving up on redis: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), reached REDIS_MAX_RETRIES={RedisMaxRetries}, exiting");
+                        Environment.Exit(1);
+                    }
                     var delay = RedisRetryDelay(attempt);
                     Console.Error.WriteLine($"Waiting for redis: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), retrying in {delay.TotalSeconds:0.#}s");
                     Thread.Sleep(delay);
                 }
             }
+        }
+
+        private static int ReadRedisMaxRetries()
+        {
+            var value = Environment.GetEnvironmentVariable("REDIS_MAX_RETRIES");
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return 0;
+            }
+            if (int.TryParse(value, out var maxRetries) && maxRetries >= 0)
+            {
+                return maxRetries;
+            }
+            Console.Error.WriteLine($"Ignoring invalid REDIS_MAX_RETRIES '{value}', expected a non-negative integer; retrying redis forever");
+            return 0;
         }
 
         // Exponential backoff: 0.5s, 1s, 2s, 4s, ... capped at 30s
