@@ -1,4 +1,4 @@
-def format_x(d):
+def format_date(d):
     return d.isoformat()[:10]
 
 
