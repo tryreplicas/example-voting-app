@@ -38,3 +38,16 @@ def format_ratio(a: int, b: int) -> str:
     """
     g = math.gcd(a, b) or 1
     return f"{a // g}:{b // g}"
+
+
+def format_bytes(n: int) -> str:
+    """Return n bytes as a human-readable size with one decimal place.
+
+    Uses 1024-based units. Example: 1536 becomes "1.5 KB".
+    """
+    size = float(n)
+    for unit in ("B", "KB", "MB", "GB"):
+        if abs(size) < 1024:
+            return f"{size:.1f} {unit}"
+        size /= 1024
+    return f"{size:.1f} TB"

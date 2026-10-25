@@ -1,6 +1,12 @@
 import datetime
 
-from format import format_amount, format_date, format_percent, format_ratio
+from format import (
+    format_amount,
+    format_bytes,
+    format_date,
+    format_percent,
+    format_ratio,
+)
 
 
 def test_format_date():
@@ -24,3 +30,12 @@ def test_format_ratio():
     assert format_ratio(3, 3) == "1:1"
     assert format_ratio(0, 5) == "0:1"
     assert format_ratio(0, 0) == "0:0"
+
+
+def test_format_bytes():
+    assert format_bytes(0) == "0.0 B"
+    assert format_bytes(512) == "512.0 B"
+    assert format_bytes(1536) == "1.5 KB"
+    assert format_bytes(1048576) == "1.0 MB"
+    assert format_bytes(1024**3) == "1.0 GB"
+    assert format_bytes(1024**4) == "1.0 TB"
