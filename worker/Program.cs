@@ -90,7 +90,7 @@ namespace Worker
         {
             NpgsqlConnection connection;
 
-            while (true)
+            for (var attempt = 1; ; attempt++)
             {
                 try
                 {
@@ -98,15 +98,11 @@ namespace Worker
                     connection.Open();
                     break;
                 }
-                catch (SocketException)
+                catch (Exception ex) when (ex is SocketException || ex is DbException)
                 {
-                    Console.Error.WriteLine("Waiting for db");
-                    Thread.Sleep(1000);
-                }
-                catch (DbException)
-                {
-                    Console.Error.WriteLine("Waiting for db");
-                    Thread.Sleep(1000);
+                    var delay = RetryDelay(attempt);
+                    Console.Error.WriteLine($"Waiting for db: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), retrying in {delay.TotalSeconds:0.#}s");
+                    Thread.Sleep(delay);
                 }
             }
 
@@ -144,7 +140,7 @@ namespace Worker
                         Console.Error.WriteLine($"Giving up on redis: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), reached REDIS_MAX_RETRIES={RedisMaxRetries}, exiting");
                         Environment.Exit(1);
                     }
-                    var delay = RedisRetryDelay(attempt);
+                    var delay = RetryDelay(attempt);
                     Console.Error.WriteLine($"Waiting for redis: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), retrying in {delay.TotalSeconds:0.#}s");
                     Thread.Sleep(delay);
                 }
@@ -166,8 +162,8 @@ namespace Worker
             return 0;
         }
 
-        // Exponential backoff: 0.5s, 1s, 2s, 4s, ... capped at 30s
-        private static TimeSpan RedisRetryDelay(int attempt)
+        // Exponential backoff for redis and db retries: 0.5s, 1s, 2s, 4s, ... capped at 30s
+        private static TimeSpan RetryDelay(int attempt)
             => TimeSpan.FromMilliseconds(Math.Min(500 * Math.Pow(2, Math.Min(attempt - 1, 16)), 30000));
 
         private static bool IsRedisConnectionError(Exception ex)
