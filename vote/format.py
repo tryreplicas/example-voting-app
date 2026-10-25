@@ -1,4 +1,3 @@
-
 def format_x(d):
     return d.isoformat()[:10]
 
