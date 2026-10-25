@@ -56,6 +56,16 @@ kubectl delete -f k8s-specifications/
 * A [Postgres](https://hub.docker.com/_/postgres/) database backed by a Docker volume
 * A [Node.js](/result) web app which shows the results of the voting in real time
 
+## Getting help
+
+If something isn't working, start by checking the steps above and the logs from the containers (`docker compose logs`). If you're still stuck:
+
+* Search the [existing issues](https://github.com/tryreplicas/example-voting-app/issues) to see if someone has already reported it.
+* [Open a new issue](https://github.com/tryreplicas/example-voting-app/issues/new) with the command you ran, the output you got, and your OS and Docker version.
+* For questions about Docker itself, see the [Docker documentation](https://docs.docker.com) or the [Docker Community Forums](https://forums.docker.com).
+
+The maintainers are listed in [MAINTAINERS](MAINTAINERS).
+
 ## Notes
 
 The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
