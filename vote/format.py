@@ -13,7 +13,7 @@ def format_date(d: datetime.date) -> str:
 
 
 def format_amount(amount: float) -> str:
-    """Format a number with two decimals, rounding half up."""
+    """Return amount as a string with two decimal places, rounding half up."""
     return str(
         Decimal(str(amount)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     )
