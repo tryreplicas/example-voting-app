@@ -1,9 +1,10 @@
 """Helpers for formatting dates and amounts for display."""
 
+import datetime
 from decimal import ROUND_HALF_UP, Decimal
 
 
-def format_date(d):
+def format_date(d: datetime.date) -> str:
     """Return the date as an ISO YYYY-MM-DD string."""
     return d.isoformat()[:10]
 
