@@ -1,7 +1,6 @@
 """Helpers for formatting dates and amounts for display."""
 
 import datetime
-import os
 import math
 from decimal import ROUND_HALF_UP, Decimal
 
