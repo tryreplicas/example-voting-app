@@ -46,6 +46,11 @@ def hello():
     resp.set_cookie('voter_id', voter_id)
     return resp
 
+@app.route("/healthz", methods=['GET'])
+def healthz():
+    # Liveness only: does not check Redis, so a brief Redis blip won't restart the container
+    return {'status': 'ok'}, 200
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
