@@ -64,3 +64,13 @@ This isn't an example of a properly architected perfectly designed distributed a
 example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
 deal with them in Docker at a basic level.
 Demo change for REP-1072 status sync.
+
+## Contributors
+
+Thanks to everyone who has contributed to this project.
+
+<a href="https://github.com/tryreplicas/example-voting-app/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tryreplicas/example-voting-app" alt="Contributors" />
+</a>
+
+See the full list on the [contributors page](https://github.com/tryreplicas/example-voting-app/graphs/contributors).
