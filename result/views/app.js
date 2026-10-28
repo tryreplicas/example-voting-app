@@ -1,3 +1,4 @@
+/* global angular, io */
 var app = angular.module('catsvsdogs', []);
 var socket = io.connect();
 
@@ -10,7 +11,7 @@ app.controller('statsCtrl', function($scope){
 
   var updateScores = function(){
     socket.on('scores', function (json) {
-       data = JSON.parse(json);
+       var data = JSON.parse(json);
        var a = parseInt(data.a || 0);
        var b = parseInt(data.b || 0);
 
@@ -31,7 +32,7 @@ app.controller('statsCtrl', function($scope){
     document.body.style.opacity=1;
     updateScores();
   };
-  socket.on('message',function(data){
+  socket.on('message',function(){
     init();
   });
 });

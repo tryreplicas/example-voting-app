@@ -1,4 +1,5 @@
 var express = require('express'),
+    path = require('path'),
     async = require('async'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
@@ -24,7 +25,7 @@ var pool = new Pool({
 async.retry(
   {times: 1000, interval: 1000},
   function(callback) {
-    pool.connect(function(err, client, done) {
+    pool.connect(function(err, client) {
       if (err) {
         console.error("Waiting for db");
       }

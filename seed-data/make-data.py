@@ -1,13 +1,7 @@
 # this creates urlencode-friendly files without EOL
 import urllib.parse
 
-outfile = open('postb', 'w')
-params = ({ 'vote': 'b' })
-encoded = urllib.parse.urlencode(params)
-outfile.write(encoded)
-outfile.close()
-outfile = open('posta', 'w')
-params = ({ 'vote': 'a' })
-encoded = urllib.parse.urlencode(params)
-outfile.write(encoded)
-outfile.close()
+with open('postb', 'w') as outfile:
+    outfile.write(urllib.parse.urlencode({'vote': 'b'}))
+with open('posta', 'w') as outfile:
+    outfile.write(urllib.parse.urlencode({'vote': 'a'}))
