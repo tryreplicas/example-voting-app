@@ -1,3 +1,4 @@
+# Vote service: a Flask web app that lets users pick between two options and queues each vote in Redis for the worker.
 from flask import Flask, render_template, request, make_response, g
 from redis import Redis
 import os
