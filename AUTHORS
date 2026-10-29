@@ -1,0 +1,45 @@
+# This file lists people who have contributed code to this repository.
+# It is generated from git history (author names and emails, merged via
+# .mailmap; bots and automation accounts are excluded). Do not edit by hand.
+#
+# To regenerate it, run from the repository root:
+#
+#   (sed -n '1,/^$/p' AUTHORS; git log --use-mailmap --format='%aN <%aE>' | grep -v -i -E '\[bot\]|replicas|noreply@anthropic\.com' | LC_ALL=C sort -f -u) > AUTHORS.new && mv AUTHORS.new AUTHORS
+
+Aanand Prasad <aanand.prasad@gmail.com>
+Akim Demaille <akim.demaille@docker.com>
+Alirezaarabi <alirezaaraby5@gmail.com>
+Ben Firshman <ben@firshman.co.uk>
+Borja Burgos <borja@tutum.co>
+Bret Fisher <bret@bretfisher.com>
+Christophe Labouisse <christophe@labouisse.org>
+DanArlowski <59116108+DanArlowski@users.noreply.github.com>
+Dave Tucker <dt@docker.com>
+David Karlsson <35727626+dvdksn@users.noreply.github.com>
+Elton Stoneman <elton@sixeyed.com>
+Erjan Gavalji <erjan.gavalji@gmail.com>
+gabrielvv <gabrielvautrin@gmail.com>
+Jenny Burcio <jennyburcio@gmail.com>
+Julien Adam <julien.adam@gmail.com>
+Justin Cormack <justin.cormack@docker.com>
+Logan Bussell <loganbussell@microsoft.com>
+Luc Juggery <luc.juggery@gmail.com>
+Mano Marks <mmarks@google.com>
+Manuel Belsak <manuel.belsak@accenture.com>
+Marc Villacorta <marc.villacorta@gmail.com>
+Marcello de Sales <marcello.desales@gmail.com>
+Marcos Nils <marcosnils@gmail.com>
+Marko Laakso <fenris@iki.fi>
+Michael Irwin <mikesir87@gmail.com>
+Mohan Pawar <mohanpawary1990@gmail.com>
+Nate McMaster <nate.mcmaster@microsoft.com>
+Oliver L Schoenborn <oliver.schoenborn@gmail.com>
+Ossi Herrala <oherrala@iki.fi>
+Peter Valdez <peter@shipyard.build>
+pocteo <47368369+pocteo@users.noreply.github.com>
+Rodion Fedorov <rodionfedorov2016@gmail.com>
+Sebastiaan van Stijn <github@gone.nl>
+Sophia Parafina <sophia.parafina@docker.com>
+Spencer Owen <owenspencer@gmail.com>
+Stefan Scherer <stefan.scherer@docker.com>
+ubinix-warun <warun@ubinix.com>
