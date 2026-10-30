@@ -28,6 +28,45 @@ Once you have your swarm, in this directory run:
 docker stack deploy --compose-file docker-stack.yml vote
 ```
 
+## Run locally
+
+You need [Docker](https://docs.docker.com/get-docker/) with the Compose plugin (`docker compose version` should print v2 or later). Ports 8080 and 8081 must be free.
+
+From the repository root, build the images and start every service:
+
+```shell
+docker compose up --build
+```
+
+Compose waits for Redis and Postgres to pass their health checks before starting the `vote`, `worker`, and `result` services. Once they're up:
+
+* Vote at [http://localhost:8080](http://localhost:8080)
+* See results at [http://localhost:8081](http://localhost:8081)
+
+The `vote` and `result` source folders are mounted into their containers, so edits to those apps show up without a rebuild. The `result` service also exposes a Node.js debugger on `127.0.0.1:9229`.
+
+Other useful commands:
+
+```shell
+# Run in the background, then follow the logs
+docker compose up -d
+docker compose logs -f
+
+# Fill the database with sample votes (runs once, then exits)
+docker compose --profile seed up -d
+
+# Use the prebuilt images from Docker Hub instead of building locally
+docker compose -f docker-compose.images.yml up
+
+# Stop the app
+docker compose down
+
+# Stop the app and delete the Postgres volume to start fresh
+docker compose down -v
+```
+
+If something doesn't start, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+
 ## Run the app in Kubernetes
 
 The folder k8s-specifications contains the YAML specifications of the Voting App's services.
