@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, g
+from flask import Flask, render_template, request, make_response, g, jsonify
 from redis import Redis
 import os
 import socket
@@ -16,12 +16,14 @@ gunicorn_error_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers.extend(gunicorn_error_logger.handlers)
 app.logger.setLevel(logging.INFO)
 
+
 def get_redis():
     if not hasattr(g, 'redis'):
         g.redis = Redis(host="redis", db=0, socket_timeout=5)
     return g.redis
 
-@app.route("/", methods=['POST','GET'])
+
+@app.route("/", methods=['POST', 'GET'])
 def hello():
     voter_id = request.cookies.get('voter_id')
     if not voter_id:
@@ -45,6 +47,11 @@ def hello():
     ))
     resp.set_cookie('voter_id', voter_id)
     return resp
+
+
+@app.route("/healthz", methods=['GET'])
+def healthz():
+    return jsonify(status="ok", host=hostname)
 
 
 if __name__ == "__main__":
