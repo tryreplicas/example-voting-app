@@ -1,4 +1,5 @@
 var express = require('express'),
+    path = require('path'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
     app = express(),
