@@ -14,6 +14,8 @@ Run in this directory to build and run the app:
 docker compose up
 ```
 
+To start the app from the repository root, run `docker compose up` (add `-d` to run it in the background).
+
 The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
 
 Health check: GET /healthz on the vote app.
