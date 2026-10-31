@@ -1,3 +1,4 @@
+# Vote frontend: Flask app that serves the voting page and queues votes in Redis.
 from flask import Flask, render_template, request, make_response, g, jsonify
 from redis import Redis
 import os
