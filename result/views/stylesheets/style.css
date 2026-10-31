@@ -88,6 +88,11 @@ body{
   text-transform: uppercase;
 }
 
+#choice .choice .votes{
+  font-size: 18px;
+  font-weight: 400;
+}
+
 #choice .choice.dogs{
   color: #00cbca;
   float: right;
