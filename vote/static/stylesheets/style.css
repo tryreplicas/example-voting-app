@@ -50,6 +50,16 @@ button.b{
   font-size: 24px;
 }
 
+#footer{
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  left: 0;
+  text-align: center;
+  color: #8f9ea8;
+  font-size: 14px;
+}
+
 #content-container{
   z-index: 2;
   position: relative;
