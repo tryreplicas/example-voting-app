@@ -1,3 +1,4 @@
+<!-- Example Voting App: a multi-container demo (Python, Node.js, .NET, Redis, Postgres). -->
 # Voting App
 
 A simple distributed application running across multiple Docker containers.
