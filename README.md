@@ -1,4 +1,4 @@
-# Voting App
+# Example Voting App (variant B)
 
 A simple distributed application running across multiple Docker containers.
 
