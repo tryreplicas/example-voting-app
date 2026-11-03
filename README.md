@@ -70,3 +70,39 @@ Edited from the phone
 Android regression test
 hello from the suite
 qa-free 2026-11-02 combo
+
+## Contributors
+
+Thanks to everyone who has contributed to this project:
+
+- [@bfirsh](https://github.com/bfirsh)
+- [@BretFisher](https://github.com/BretFisher)
+- [@ManoMarks](https://github.com/ManoMarks)
+- [@mikesir87](https://github.com/mikesir87)
+- [@sixeyed](https://github.com/sixeyed)
+- [@aanand](https://github.com/aanand)
+- [@jrburcio](https://github.com/jrburcio)
+- [@dvdksn](https://github.com/dvdksn)
+- [@lucj](https://github.com/lucj)
+- [@thaJeztah](https://github.com/thaJeztah)
+- [@StefanScherer](https://github.com/StefanScherer)
+- [@spara](https://github.com/spara)
+- [@marcellodesales](https://github.com/marcellodesales)
+- [@ubinix-warun](https://github.com/ubinix-warun)
+- [@spuder](https://github.com/spuder)
+- [@rf-sys](https://github.com/rf-sys)
+- [@oherrala](https://github.com/oherrala)
+- [@schollii](https://github.com/schollii)
+- [@mohan08p](https://github.com/mohan08p)
+- [@ikisusi](https://github.com/ikisusi)
+- [@marcosnils](https://github.com/marcosnils)
+- [@h0tbird](https://github.com/h0tbird)
+- [@mbelsakACN](https://github.com/mbelsakACN)
+- [@lbussell](https://github.com/lbussell)
+- [@justincormack](https://github.com/justincormack)
+- [@ErjanGavalji](https://github.com/ErjanGavalji)
+- [@dave-tucker](https://github.com/dave-tucker)
+- [@DanArlowski](https://github.com/DanArlowski)
+- [@ggtools](https://github.com/ggtools)
+- [@Alirezaaraby](https://github.com/Alirezaaraby)
+- [@akimd](https://github.com/akimd)
