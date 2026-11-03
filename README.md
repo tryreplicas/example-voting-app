@@ -1,5 +1,7 @@
 # Example Voting App (variant A)
 
+> **Local development:** run `docker compose up` in this directory; the vote app is at http://localhost:8080 and results at http://localhost:8081.
+
 A simple distributed application running across multiple Docker containers.
 
 ## Getting started
