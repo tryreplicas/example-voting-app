@@ -30,7 +30,8 @@ docker compose --profile seed up -d
 
 - Stop the services: `docker compose down`
 - Stop and delete the Postgres data volume (`db-data`), which clears all votes: `docker compose down -v`
-- Rebuild the images after changing a Dockerfile or the app code: `docker compose up --build`
+- Rebuild the images after changing a Dockerfile or the `worker` code: `docker compose up --build`
+- `vote` and `result` mount their source folders, so restarting them (`docker compose restart vote result`) picks up code changes without a rebuild
 
 ## Where things live
 
