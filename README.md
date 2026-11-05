@@ -2,21 +2,26 @@
 
 A simple distributed application running across multiple Docker containers.
 
-## Getting started
+## Run locally
 
-Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
+The app uses Python, Node.js and .NET, with Redis for messaging and Postgres for storage. Everything runs in containers, so you only need Docker.
 
-This solution uses Python, Node.js, .NET, with Redis for messaging and Postgres for storage.
+**Prerequisites:** [Docker Desktop](https://www.docker.com/products/docker-desktop) (Mac/Windows, includes Compose) or Docker Engine with the [Compose plugin](https://docs.docker.com/compose/install/) (Linux). Ports 8080 and 8081 must be free.
 
-Run in this directory to build and run the app:
+From the repo root, build and start all services:
 
 ```shell
 docker compose up
 ```
 
-The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
+To skip the build and use prebuilt images instead, run `docker compose -f docker-compose.images.yml up`.
 
-Health check: GET /healthz on the vote app.
+| App    | URL                                            |
+|--------|------------------------------------------------|
+| vote   | [http://localhost:8080](http://localhost:8080) |
+| result | [http://localhost:8081](http://localhost:8081) |
+
+The vote app exposes a health check at `GET /healthz`. Stop everything with `docker compose down` (add `-v` to also delete the Postgres volume).
 
 Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
 
