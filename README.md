@@ -1,3 +1,4 @@
+<!-- Project overview and setup instructions; keep in sync with docs/ports.md. -->
 # Example Voting App (variant A)
 
 A simple distributed application running across multiple Docker containers.
