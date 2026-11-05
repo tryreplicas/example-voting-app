@@ -48,6 +48,24 @@ To remove them, run:
 kubectl delete -f k8s-specifications/
 ```
 
+## Viewing results
+
+Once the app is running, open the `result` app in your browser:
+
+| How you started the app | Result app URL |
+| --- | --- |
+| `docker compose up` | [http://localhost:8081](http://localhost:8081) |
+| `docker stack deploy` | `http://<swarm-node>:8081` |
+| `kubectl create -f k8s-specifications/` | `http://<cluster-node>:31001` |
+
+The page shows the current split between the two options, Cats and Dogs:
+
+* The percentage of votes for each option. Both show 50% before any votes come in.
+* A background bar for each option whose width matches its share of the vote.
+* The total number of votes cast, or "No votes yet" if there are none.
+
+The page updates live, so you don't need to refresh it. The `result` app checks Postgres for new tallies once a second and pushes them to the browser over Socket.IO. To watch it change, cast a vote in the `vote` app. Votes go through Redis and the worker before they reach Postgres, so it can take a moment for a new vote to show up.
+
 ## Architecture
 
 ![Architecture diagram](architecture.excalidraw.png)
