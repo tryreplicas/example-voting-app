@@ -39,3 +39,4 @@ docker compose --profile seed up -d
 - `worker/`: .NET worker that moves votes from Redis into Postgres.
 - `result/`: Node.js web app that shows results in real time from Postgres.
 - Redis and Postgres run from public images, and Postgres stores its data in the `db-data` volume.
+Test line.
