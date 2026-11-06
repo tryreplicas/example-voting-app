@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
 using Npgsql;
@@ -12,10 +14,18 @@ namespace Worker
 {
     public class Program
     {
+        private static volatile bool _redisUp;
+        private static volatile bool _dbUp;
+        private static long _lastLoopTicks = DateTime.UtcNow.Ticks;
+        private static readonly TimeSpan LoopStallLimit = TimeSpan.FromSeconds(10);
+
         public static int Main(string[] args)
         {
             try
             {
+                // Start first so /healthz answers while we wait for db and redis
+                StartHealthListener();
+
                 var pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
                 var redisConn = OpenRedisConnection("redis");
                 var redis = redisConn.GetDatabase();
@@ -30,13 +40,18 @@ namespace Worker
                 {
                     // Slow down to prevent CPU spike, only query each 100ms
                     Thread.Sleep(100);
+                    Interlocked.Exchange(ref _lastLoopTicks, DateTime.UtcNow.Ticks);
 
                     // Reconnect redis if down
-                    if (redisConn == null || !redisConn.IsConnected) {
+                    _redisUp = redisConn != null && redisConn.IsConnected;
+                    if (!_redisUp) {
                         Console.WriteLine("Reconnecting Redis");
                         redisConn = OpenRedisConnection("redis");
                         redis = redisConn.GetDatabase();
+                        _redisUp = true;
                     }
+                    _dbUp = pgsql.State.Equals(System.Data.ConnectionState.Open);
+
                     string json = redis.ListLeftPopAsync("votes").Result;
                     if (json != null)
                     {
@@ -64,6 +79,72 @@ namespace Worker
                 Console.Error.WriteLine(ex.ToString());
                 return 1;
             }
+        }
+
+        private static void StartHealthListener()
+        {
+            var listener = new HttpListener();
+            listener.Prefixes.Add("http://+:8081/");
+            try
+            {
+                listener.Start();
+            }
+            catch (HttpListenerException ex)
+            {
+                Console.Error.WriteLine($"Health endpoint not started: {ex.Message}");
+                return;
+            }
+
+            var thread = new Thread(() =>
+            {
+                while (true)
+                {
+                    var context = listener.GetContext();
+                    try
+                    {
+                        HandleHealthRequest(context.Request, context.Response);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine(ex.ToString());
+                    }
+                    finally
+                    {
+                        context.Response.Close();
+                    }
+                }
+            }) { IsBackground = true };
+            thread.Start();
+        }
+
+        private static void HandleHealthRequest(HttpListenerRequest request, HttpListenerResponse response)
+        {
+            if (request.Url.AbsolutePath != "/healthz")
+            {
+                response.StatusCode = 404;
+                return;
+            }
+            if (request.HttpMethod != "GET")
+            {
+                response.StatusCode = 405;
+                return;
+            }
+
+            var failing = new List<string>();
+            if (!_redisUp) failing.Add("redis");
+            if (!_dbUp) failing.Add("db");
+            // Only judge the loop when both connections are up, since reconnects block it
+            if (failing.Count == 0 && DateTime.UtcNow.Ticks - Interlocked.Read(ref _lastLoopTicks) > LoopStallLimit.Ticks)
+            {
+                failing.Add("loop");
+            }
+
+            var healthy = failing.Count == 0;
+            response.StatusCode = healthy ? 200 : 503;
+            response.ContentType = "application/json";
+            var bytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { status = healthy ? "ok" : "unavailable", failing }));
+            response.ContentLength64 = bytes.Length;
+            response.OutputStream.Write(bytes, 0, bytes.Length);
         }
 
         private static NpgsqlConnection OpenDbConnection(string connectionString)
