@@ -1,9 +1,9 @@
+from collections import Counter
+
+
 def count_votes(votes):
     """Count votes from a list into a dict."""
-    tally = {}
-    for vote in votes:
-        tally[vote] = tally.get(vote, 0) + 1
-    return tally
+    return Counter(votes)
 
 
 def get_leading_option(tally):
