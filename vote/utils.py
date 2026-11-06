@@ -3,7 +3,7 @@ def normalize_option(option):
 
 
 def is_valid_vote(vote):
-    return isinstance(vote, str) and len(vote) > 0
+    return isinstance(vote, str) and len(vote.strip()) > 0
 
 
 def sorted_tally(tally):
