@@ -3,6 +3,27 @@
 *{
   box-sizing:border-box;
 }
+:root{
+  color-scheme: light dark;
+  --cats-color: #2196f3;
+  --dogs-color: #00cbca;
+  --cats-bg: #2196f3;
+  --dogs-bg: #00cbca;
+  --card-bg: #fff;
+  --divider-color: #C0C9CE;
+  --result-color: #fff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --cats-color: #64b5f6;
+    --dogs-color: #4dd0e1;
+    --cats-bg: #0d3c66;
+    --dogs-bg: #00585a;
+    --card-bg: #1e1f22;
+    --divider-color: #44494d;
+    --result-color: #e6e6e6;
+  }
+}
 html,body{
   margin:0;
   padding:0;
@@ -17,7 +38,7 @@ body{
 .divider{
   height: 150px;
   width:2px;
-  background-color: #C0C9CE;
+  background-color: var(--divider-color);
   position: relative;
   top: 50%;
   float: left;
@@ -25,11 +46,11 @@ body{
 }
 
 #background-stats-1{
-  background-color: #2196f3;
+  background-color: var(--cats-bg);
 }
 
 #background-stats-2{
-  background-color: #00cbca;
+  background-color: var(--dogs-bg);
 }
 
 #content-container{
@@ -51,7 +72,7 @@ body{
   position: absolute;
   bottom: 40px;
   right: 20px;
-  color: #fff;
+  color: var(--result-color);
   opacity: 0.5;
   font-size: 45px;
   font-weight: 600;
@@ -59,8 +80,8 @@ body{
 #choice{
   transition: all 300ms linear;
   line-height:1.3em;
-  background:#fff;
-  box-shadow: 10px 0 0 #fff, -10px 0 0 #fff;
+  background: var(--card-bg);
+  box-shadow: 10px 0 0 var(--card-bg), -10px 0 0 var(--card-bg);
   vertical-align:middle;
   font-size:40px;
   font-weight: 600;
@@ -89,12 +110,12 @@ body{
 }
 
 #choice .choice.dogs{
-  color: #00cbca;
+  color: var(--dogs-color);
   float: right;
 }
 
 #choice .choice.cats{
-  color: #2196f3;
+  color: var(--cats-color);
   float: left;
 }
 #background-stats{
