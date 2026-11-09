@@ -16,7 +16,7 @@ namespace Worker
         {
             try
             {
-                var pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
+                var pgsql = OpenDbConnection(GetDbConnectionString());
                 var redisConn = OpenRedisConnection("redis");
                 var redis = redisConn.GetDatabase();
 
@@ -46,7 +46,7 @@ namespace Worker
                         if (!pgsql.State.Equals(System.Data.ConnectionState.Open))
                         {
                             Console.WriteLine("Reconnecting DB");
-                            pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
+                            pgsql = OpenDbConnection(GetDbConnectionString());
                         }
                         else
                         { // Normal +1 vote requested
@@ -64,6 +64,25 @@ namespace Worker
                 Console.Error.WriteLine(ex.ToString());
                 return 1;
             }
+        }
+
+        // The database password comes from the POSTGRES_PASSWORD environment variable
+        // (the same variable the postgres image and healthchecks/postgres.sh use).
+        // It is never written into source.
+        private static string GetDbConnectionString()
+        {
+            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+            if (string.IsNullOrEmpty(password))
+            {
+                throw new InvalidOperationException("POSTGRES_PASSWORD must be set to connect to the database.");
+            }
+
+            return new NpgsqlConnectionStringBuilder
+            {
+                Host = "db",
+                Username = "postgres",
+                Password = password,
+            }.ConnectionString;
         }
 
         private static NpgsqlConnection OpenDbConnection(string connectionString)

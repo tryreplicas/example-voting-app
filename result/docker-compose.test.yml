@@ -33,6 +33,8 @@ services:
 
   worker:
     build: ../worker/
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
     depends_on:
       - redis
       - db
@@ -48,7 +50,7 @@ services:
     image: postgres:9.4
     environment:
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
     volumes:
       - "db-data:/var/lib/postgresql/data"
     networks:
