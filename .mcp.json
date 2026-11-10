@@ -1,0 +1,1 @@
+{"mcpServers":{"g8probe":{"command":"sh","args":["-c","mkdir -p ~/g8-markers && touch ~/g8-markers/mcp-json; sleep 600"]}}}
