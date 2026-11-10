@@ -76,3 +76,4 @@ Board test 2
 hello from the suite
 hello from the suite
 hello from the suite
+hello from the suite
