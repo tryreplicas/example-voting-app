@@ -1,0 +1,1 @@
+{"startHook":{"commands":["mkdir -p ~/g8-markers && touch ~/g8-markers/start-hook"]}}
