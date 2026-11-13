@@ -131,3 +131,13 @@ body{
   width:50%;
   height:100%;
 }
+
+#footer{
+  z-index: 3;
+  position: absolute;
+  bottom: 8px;
+  right: 20px;
+  color: var(--result-color);
+  opacity: 0.5;
+  font-size: 11px;
+}
