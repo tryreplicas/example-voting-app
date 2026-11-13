@@ -30,6 +30,23 @@ Once you have your swarm, in this directory run:
 docker stack deploy --compose-file docker-stack.yml vote
 ```
 
+## Running locally
+
+From the repo root, run:
+
+```shell
+docker compose up
+```
+
+This builds and starts:
+
+- `vote`: the Python web app where you cast a vote, at http://localhost:8080
+- `result`: the Node.js web app showing live results, at http://localhost:8081
+- `worker`: moves votes from Redis into Postgres (no exposed port)
+- `redis` and `db` (Postgres): the queue and the data store
+
+The `vote` and `result` source folders are mounted into their containers, so code changes are picked up while it runs. To also fill the database with sample votes, run `docker compose --profile seed up -d`. Stop everything with `docker compose down`.
+
 ## Run the app in Kubernetes
 
 The folder k8s-specifications contains the YAML specifications of the Voting App's services.
