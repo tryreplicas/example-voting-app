@@ -31,7 +31,7 @@
     "dev:token": "bash scripts/dev-token.sh",
     "docs:generate-plugin-schemas": "bun scripts/generate-openapi-plugin-schemas.ts",
     "generate:persisted-query-hashes": "bun scripts/persisted-query-hashes.ts",
-    "lint": "bun run --cwd web lint && bun run --cwd admin lint && eslint \"{mobile,mobile-next,desktop-app}/**/*.{ts,tsx}\" \"{shared,client-data}/src/**/*.{ts,tsx}\" \"{monolith,engine,cli}/src/**/*.ts\"",
+    "lint": "bun run --cwd web lint && bun run --cwd admin lint && NODE_OPTIONS=--max-old-space-size=8192 eslint \"{mobile,mobile-next,desktop-app}/**/*.{ts,tsx}\" \"{shared,client-data}/src/**/*.{ts,tsx}\" \"{monolith,engine,cli}/src/**/*.ts\"",
     "check:foreign-keys": "node scripts/check-foreign-keys.mjs",
     "check:symlinks": "node scripts/check-symlinks.mjs",
     "check:pg-promise-imports": "node scripts/check-pg-promise-imports.mjs",
