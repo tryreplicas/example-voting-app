@@ -93,3 +93,4 @@ hello from the suite
 Changes tab repro: pushed line
 hello from the suite
 pushed line one
+uncommitted edit line
