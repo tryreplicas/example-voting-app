@@ -18,6 +18,8 @@ The `vote` app will be running at [http://localhost:8080](http://localhost:8080)
 
 Health check: GET /healthz endpoint on the vote app.
 
+> **Note:** The host ports (8080 for `vote`, 8081 for `results`) are set in `docker-compose.yml`. If they clash with another local service, change the left-hand side of the `ports` mappings there.
+
 Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
 
 ```shell
