@@ -1,0 +1,1 @@
+This repository is an example voting app: a simple distributed application that runs in Docker containers, where a Python web app collects votes through Redis, a .NET worker moves them into Postgres, and a Node.js web app shows the results in real time.
