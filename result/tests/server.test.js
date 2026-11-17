@@ -5,12 +5,12 @@ const vm = require('node:vm');
 
 // Exercise the real server's polling lifecycle without a live database or port.
 function startServer() {
-  const queries = [], timers = [], scores = [], errors = [], handlers = {};
+  const queries = [], timers = [], scores = [], errors = [], handlers = {}, routes = {};
   const pool = {
     query(sql, parameters, callback) { queries.push({ sql, callback }); },
     on(event, callback) { handlers[event] = callback; }
   };
-  const app = { use() {}, get() {} };
+  const app = { use() {}, get(path, handler) { routes[path] = handler; } };
   const modules = {
     express: Object.assign(() => app, { urlencoded() {}, static() {} }),
     pg: { Pool: function() { return pool; } },
@@ -32,7 +32,14 @@ function startServer() {
     setTimeout(callback, delay) { timers.push({ callback, delay }); }
   });
   return {
-    queries, timers, scores, errors, handlers,
+    queries, timers, scores, errors, handlers, routes,
+    get(path) {
+      const response = { statusCode: 200, body: undefined,
+        status(code) { this.statusCode = code; return this; },
+        json(payload) { this.body = JSON.stringify(payload); return this; } };
+      routes[path]({ }, response);
+      return response;
+    },
     nextPoll() {
       const timer = timers.shift();
       assert.equal(timer.delay, 1000);
@@ -90,4 +97,34 @@ test('handles idle connection errors and continues polling', () => {
   server.nextPoll();
   finishQuery(server, [{ vote: 'b', count: '2' }]);
   assert.deepEqual(JSON.parse(server.scores[1].payload), { a: 0, b: 2 });
+});
+
+test('GET /stats returns current vote counts as JSON', () => {
+  const server = startServer();
+  finishQuery(server, [{ vote: 'a', count: '1' }]);
+  const response = server.get('/stats');
+  finishQuery(server, [{ vote: 'a', count: '12' }, { vote: 'b', count: '7' }]);
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), { a: 12, b: 7 });
+  assert.equal(server.queries.length, 0, 'stats must not schedule extra polling');
+});
+
+test('GET /stats reports zero counts for an empty table', () => {
+  const server = startServer();
+  finishQuery(server, []);
+  const response = server.get('/stats');
+  finishQuery(server, []);
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), { a: 0, b: 0 });
+});
+
+test('GET /stats returns a generic 500 on database failure', () => {
+  const server = startServer();
+  finishQuery(server, []);
+  const response = server.get('/stats');
+  server.queries.shift().callback(new Error('password authentication failed for user "postgres"'));
+  assert.equal(response.statusCode, 500);
+  assert.deepEqual(JSON.parse(response.body), { error: 'Could not load vote counts' });
+  assert.doesNotMatch(response.body, /postgres|password|authentication/);
+  assert.match(server.errors[0], /password authentication failed/, 'details are logged server-side');
 });
