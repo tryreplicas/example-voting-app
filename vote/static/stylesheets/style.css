@@ -48,6 +48,8 @@ button.b{
   left: 0;
   color: #8f9ea8;
   font-size: 24px;
+  padding: 0 10px;
+  overflow-wrap: break-word;
 }
 
 #content-container{
@@ -87,6 +89,8 @@ button.b{
   display: block;
   height: 80px;
   width: 330px;
+  /* Never wider than the viewport minus the container's 10px side padding */
+  max-width: calc(100vw - 20px);
   border: none;
   color: white;
   text-transform: uppercase;
@@ -126,4 +130,17 @@ button.b{
   margin-bottom:-4px;
   width:50%;
   height:100%;
+}
+
+@media (max-width: 480px) {
+  #choice button{
+    padding-left: 30px;
+  }
+  button i{
+    padding-right: 20px;
+  }
+  #hostname{
+    bottom: 40px;
+    font-size: 18px;
+  }
 }
