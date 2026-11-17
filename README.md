@@ -95,3 +95,4 @@ hello from the suite
 pushed line one
 uncommitted edit line
 hello from the suite
+hello from the suite
