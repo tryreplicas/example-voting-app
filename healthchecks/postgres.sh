@@ -1,4 +1,7 @@
 #!/bin/bash
+# Healthcheck for the `db` service (PostgreSQL) in docker-compose.yml and
+# docker-compose.images.yml. Runs `SELECT 1` via psql over TCP against the
+# container's own IP and exits 0 only if the query returns 1.
 set -eo pipefail
 
 host="$(hostname -i || echo '127.0.0.1')"
