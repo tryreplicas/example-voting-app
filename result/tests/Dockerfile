@@ -1,10 +1,10 @@
-FROM node:8.9-slim
+FROM node:20-slim
 
 RUN apt-get update -qq && apt-get install -qy \ 
     ca-certificates \
     bzip2 \
     curl \
-    libfontconfig \
+    libfontconfig1 \
     --no-install-recommends
 RUN yarn global add phantomjs-prebuilt
 ADD . /app
