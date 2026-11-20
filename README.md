@@ -97,3 +97,4 @@ uncommitted edit line
 hello from the suite
 hello from the suite
 <!-- keep next param -->
+<!-- empty chart prompt -->
