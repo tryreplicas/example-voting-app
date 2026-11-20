@@ -18,7 +18,7 @@ docker compose up
 This builds the images and starts five services: `vote`, `result`, `worker`, `redis`, and `db`. Add `-d` to run them in the background.
 
 - Vote: [http://localhost:8080](http://localhost:8080)
-- Results: [http://localhost:8081](http://localhost:8081)
+- Results: [http://localhost:8081](http://localhost:8081) (host port 8081 maps to port 80, which the `result` container listens on)
 
 To load sample votes, start the optional `seed` service with its profile:
 
