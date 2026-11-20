@@ -48,6 +48,40 @@ To remove them, run:
 kubectl delete -f k8s-specifications/
 ```
 
+## Running the tests
+
+**Result app unit tests** (`result/tests/*.test.js`, Node's built-in test runner, Node 18+; no install or database needed):
+
+```shell
+cd result
+npm test
+```
+
+**Vote app unit tests** (`vote/tests/`, pytest; `pytest` isn't in `requirements.txt`, so install it separately):
+
+```shell
+cd vote
+pip install -r requirements.txt pytest
+python -m pytest tests
+```
+
+**End-to-end test** (`result/docker-compose.test.yml`): starts the full stack, casts a vote through `vote`, and checks that `result` renders `1 vote` (`result/tests/tests.sh`). The `sut` container's exit code is the test result:
+
+```shell
+cd result
+docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from sut
+```
+
+> Note: this suite currently fails to build because `result/tests/Dockerfile` is based on `node:8.9-slim` (Debian Stretch, end of life), so its `apt-get update` step fails.
+
+**Healthchecks** (`healthchecks/redis.sh`, `healthchecks/postgres.sh`) aren't a test suite. `docker compose up` runs them as container healthchecks for `redis` and `db`, alongside a `curl` check on `vote`. To check their status:
+
+```shell
+docker compose ps
+```
+
+The `e2e/` directory contains only placeholder text files and no runnable tests.
+
 ## Architecture
 
 ![Architecture diagram](architecture.excalidraw.png)
