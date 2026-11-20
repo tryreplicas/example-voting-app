@@ -30,6 +30,8 @@ Once you have your swarm, in this directory run:
 docker stack deploy --compose-file docker-stack.yml vote
 ```
 
+The `vote` app will be at [http://localhost:8080](http://localhost:8080) and the `result` app at [http://localhost:8081](http://localhost:8081).
+
 ## Run the app in Kubernetes
 
 The folder k8s-specifications contains the YAML specifications of the Voting App's services.
