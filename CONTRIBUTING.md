@@ -33,6 +33,20 @@ docker compose --profile seed up -d
 - Rebuild the images after changing a Dockerfile or the `worker` code: `docker compose up --build`
 - `vote` and `result` mount their source folders, so restarting them (`docker compose restart vote result`) picks up code changes without a rebuild
 
+## Running the tests
+
+The unit tests run on your machine and don't need Docker:
+
+```shell
+cd vote
+pip install -r requirements.txt pytest
+pytest
+
+cd ../result
+npm ci
+npm test
+```
+
 ## Where things live
 
 - `vote/`: Python web app for casting votes (Redis is its queue).
