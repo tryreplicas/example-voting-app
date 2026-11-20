@@ -1,3 +1,11 @@
+"""Vote service: the Flask web front end of the voting app.
+
+Serves a page that lets a user vote between two options (OPTION_A and
+OPTION_B, defaulting to "Cats" and "Dogs"). Each browser gets a random
+voter_id cookie; on POST the vote is pushed as JSON onto the Redis "votes"
+list, where the worker service picks it up and persists it to Postgres.
+Also exposes a /healthz endpoint for health checks.
+"""
 from flask import Flask, render_template, request, make_response, g, jsonify
 from redis import Redis
 import os
