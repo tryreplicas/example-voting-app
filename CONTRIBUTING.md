@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping out! This guide covers running the voting app locally with Docker Compose.
+Thanks for helping out! This guide covers running the voting app locally with Docker Compose. For an overview of the app, its architecture, and other ways to run it (Docker Swarm, Kubernetes), see the [README](README.md).
 
 ## Prerequisites
 
@@ -39,3 +39,11 @@ docker compose --profile seed up -d
 - `worker/`: .NET worker that moves votes from Redis into Postgres.
 - `result/`: Node.js web app that shows results in real time from Postgres.
 - Redis and Postgres run from public images, and Postgres stores its data in the `db-data` volume.
+
+## Opening a pull request
+
+1. Create a branch from `main` and make your change.
+2. Run the app with `docker compose up --build` and check your change at the URLs above.
+3. Open a pull request against `main` with a short description of what changed and why, and link the related issue if there is one.
+
+Pull requests that change `vote/`, `result/`, or `worker/` trigger a GitHub Actions workflow that builds that service's Docker image (the image isn't pushed), so keep it passing.
