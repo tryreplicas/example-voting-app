@@ -1,1 +1,1 @@
-Greeting colour: green
+Greeting colour: blue
