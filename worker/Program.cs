@@ -70,6 +70,13 @@ namespace Worker
         {
             NpgsqlConnection connection;
 
+            // The worker can start before Postgres is accepting connections, e.g. under
+            // docker compose (depends_on only waits as long as the db healthcheck says),
+            // docker stack or Kubernetes. Keep retrying until Open() succeeds: on a
+            // SocketException (host unreachable / connection refused) or a DbException
+            // (e.g. NpgsqlException while Postgres is still starting up) log
+            // "Waiting for db", sleep 1 second and try again. There is no retry limit.
+            // This also runs when Main reconnects after the DB connection drops.
             while (true)
             {
                 try
