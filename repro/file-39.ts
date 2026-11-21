@@ -1,0 +1,17 @@
+export const value39_1_1 = 39; // line for commit 1
+export const value39_1_2 = 78; // line for commit 1
+export const value39_1_3 = 117; // line for commit 1
+export const value39_1_4 = 156; // line for commit 1
+export const value39_1_5 = 195; // line for commit 1
+export const value39_1_6 = 234; // line for commit 1
+export const value39_1_7 = 273; // line for commit 1
+export const value39_1_8 = 312; // line for commit 1
+export const value39_1_9 = 351; // line for commit 1
+export const value39_1_10 = 390; // line for commit 1
+export const value39_1_11 = 429; // line for commit 1
+export const value39_1_12 = 468; // line for commit 1
+export const value39_1_13 = 507; // line for commit 1
+export const value39_1_14 = 546; // line for commit 1
+export const value39_1_15 = 585; // line for commit 1
+export const value39_1_16 = 624; // line for commit 1
+export const value39_1_17 = 663; // line for commit 1

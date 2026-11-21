@@ -1,0 +1,17 @@
+export const value60_1_1 = 60; // line for commit 1
+export const value60_1_2 = 120; // line for commit 1
+export const value60_1_3 = 180; // line for commit 1
+export const value60_1_4 = 240; // line for commit 1
+export const value60_1_5 = 300; // line for commit 1
+export const value60_1_6 = 360; // line for commit 1
+export const value60_1_7 = 420; // line for commit 1
+export const value60_1_8 = 480; // line for commit 1
+export const value60_1_9 = 540; // line for commit 1
+export const value60_1_10 = 600; // line for commit 1
+export const value60_1_11 = 660; // line for commit 1
+export const value60_1_12 = 720; // line for commit 1
+export const value60_1_13 = 780; // line for commit 1
+export const value60_1_14 = 840; // line for commit 1
+export const value60_1_15 = 900; // line for commit 1
+export const value60_1_16 = 960; // line for commit 1
+export const value60_1_17 = 1020; // line for commit 1

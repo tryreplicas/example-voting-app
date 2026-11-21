@@ -1,0 +1,17 @@
+export const value2_1_1 = 2; // line for commit 1
+export const value2_1_2 = 4; // line for commit 1
+export const value2_1_3 = 6; // line for commit 1
+export const value2_1_4 = 8; // line for commit 1
+export const value2_1_5 = 10; // line for commit 1
+export const value2_1_6 = 12; // line for commit 1
+export const value2_1_7 = 14; // line for commit 1
+export const value2_1_8 = 16; // line for commit 1
+export const value2_1_9 = 18; // line for commit 1
+export const value2_1_10 = 20; // line for commit 1
+export const value2_1_11 = 22; // line for commit 1
+export const value2_1_12 = 24; // line for commit 1
+export const value2_1_13 = 26; // line for commit 1
+export const value2_1_14 = 28; // line for commit 1
+export const value2_1_15 = 30; // line for commit 1
+export const value2_1_16 = 32; // line for commit 1
+export const value2_1_17 = 34; // line for commit 1

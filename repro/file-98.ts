@@ -1,0 +1,17 @@
+export const value98_1_1 = 98; // line for commit 1
+export const value98_1_2 = 196; // line for commit 1
+export const value98_1_3 = 294; // line for commit 1
+export const value98_1_4 = 392; // line for commit 1
+export const value98_1_5 = 490; // line for commit 1
+export const value98_1_6 = 588; // line for commit 1
+export const value98_1_7 = 686; // line for commit 1
+export const value98_1_8 = 784; // line for commit 1
+export const value98_1_9 = 882; // line for commit 1
+export const value98_1_10 = 980; // line for commit 1
+export const value98_1_11 = 1078; // line for commit 1
+export const value98_1_12 = 1176; // line for commit 1
+export const value98_1_13 = 1274; // line for commit 1
+export const value98_1_14 = 1372; // line for commit 1
+export const value98_1_15 = 1470; // line for commit 1
+export const value98_1_16 = 1568; // line for commit 1
+export const value98_1_17 = 1666; // line for commit 1

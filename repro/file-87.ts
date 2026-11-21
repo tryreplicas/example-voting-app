@@ -1,0 +1,17 @@
+export const value87_1_1 = 87; // line for commit 1
+export const value87_1_2 = 174; // line for commit 1
+export const value87_1_3 = 261; // line for commit 1
+export const value87_1_4 = 348; // line for commit 1
+export const value87_1_5 = 435; // line for commit 1
+export const value87_1_6 = 522; // line for commit 1
+export const value87_1_7 = 609; // line for commit 1
+export const value87_1_8 = 696; // line for commit 1
+export const value87_1_9 = 783; // line for commit 1
+export const value87_1_10 = 870; // line for commit 1
+export const value87_1_11 = 957; // line for commit 1
+export const value87_1_12 = 1044; // line for commit 1
+export const value87_1_13 = 1131; // line for commit 1
+export const value87_1_14 = 1218; // line for commit 1
+export const value87_1_15 = 1305; // line for commit 1
+export const value87_1_16 = 1392; // line for commit 1
+export const value87_1_17 = 1479; // line for commit 1

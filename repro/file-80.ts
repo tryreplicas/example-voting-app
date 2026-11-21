@@ -1,0 +1,17 @@
+export const value80_1_1 = 80; // line for commit 1
+export const value80_1_2 = 160; // line for commit 1
+export const value80_1_3 = 240; // line for commit 1
+export const value80_1_4 = 320; // line for commit 1
+export const value80_1_5 = 400; // line for commit 1
+export const value80_1_6 = 480; // line for commit 1
+export const value80_1_7 = 560; // line for commit 1
+export const value80_1_8 = 640; // line for commit 1
+export const value80_1_9 = 720; // line for commit 1
+export const value80_1_10 = 800; // line for commit 1
+export const value80_1_11 = 880; // line for commit 1
+export const value80_1_12 = 960; // line for commit 1
+export const value80_1_13 = 1040; // line for commit 1
+export const value80_1_14 = 1120; // line for commit 1
+export const value80_1_15 = 1200; // line for commit 1
+export const value80_1_16 = 1280; // line for commit 1
+export const value80_1_17 = 1360; // line for commit 1

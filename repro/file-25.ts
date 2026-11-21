@@ -1,0 +1,17 @@
+export const value25_1_1 = 25; // line for commit 1
+export const value25_1_2 = 50; // line for commit 1
+export const value25_1_3 = 75; // line for commit 1
+export const value25_1_4 = 100; // line for commit 1
+export const value25_1_5 = 125; // line for commit 1
+export const value25_1_6 = 150; // line for commit 1
+export const value25_1_7 = 175; // line for commit 1
+export const value25_1_8 = 200; // line for commit 1
+export const value25_1_9 = 225; // line for commit 1
+export const value25_1_10 = 250; // line for commit 1
+export const value25_1_11 = 275; // line for commit 1
+export const value25_1_12 = 300; // line for commit 1
+export const value25_1_13 = 325; // line for commit 1
+export const value25_1_14 = 350; // line for commit 1
+export const value25_1_15 = 375; // line for commit 1
+export const value25_1_16 = 400; // line for commit 1
+export const value25_1_17 = 425; // line for commit 1
