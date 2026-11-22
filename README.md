@@ -1,5 +1,7 @@
 # Example Voting App (variant A)
 
+![Status](https://img.shields.io/badge/status-passing-green)
+
 A simple distributed application running across multiple Docker containers.
 
 ## Getting started
