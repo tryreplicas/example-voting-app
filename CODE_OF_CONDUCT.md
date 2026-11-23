@@ -2,28 +2,28 @@
 
 ## Our Pledge
 
-We pledge to make participation in this project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
+We want everyone to feel welcome here. We pledge to keep this project a harassment-free space for all, no matter your age, body size, disability, ethnicity, gender identity and expression, experience level, nationality, appearance, race, religion, or sexual identity and orientation.
 
 ## Our Standards
 
-Examples of behavior that contributes to a positive environment:
+Things that help keep this a great place to hang out:
 
-- Being respectful and welcoming of differing viewpoints and experiences
-- Giving and gracefully accepting constructive feedback
-- Focusing on what is best for the community
+- Being kind and welcoming to people with different viewpoints and experiences
+- Giving feedback thoughtfully, and taking it gracefully
+- Keeping the community's best interests in mind
 
-Examples of unacceptable behavior:
+Things we won't put up with:
 
 - Harassment, insults, derogatory comments, or personal or political attacks
-- Trolling or sustained disruption of discussions
-- Publishing others' private information without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a professional setting
+- Trolling or constantly derailing discussions
+- Sharing other people's private info without their okay
+- Anything else that wouldn't fly in a professional setting
 
 ## Enforcement
 
-Project maintainers are responsible for clarifying and enforcing these standards, and may remove, edit, or reject contributions, comments, and issues that do not align with this Code of Conduct, or temporarily or permanently ban contributors for behavior they deem inappropriate.
+Maintainers are in charge of explaining and enforcing these standards. They may remove, edit, or reject contributions, comments, and issues that don't fit this Code of Conduct, and may temporarily or permanently ban folks whose behavior they find inappropriate.
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the maintainers at **[INSERT CONTACT EMAIL]**. All complaints will be reviewed and investigated promptly and fairly.
+If you see or experience something that's not okay, please let us know at **conduct@example.com**. We'll look into every report promptly and fairly.
 
 ## Attribution
 
