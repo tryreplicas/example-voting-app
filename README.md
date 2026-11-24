@@ -30,6 +30,26 @@ Once you have your swarm, in this directory run:
 docker stack deploy --compose-file docker-stack.yml vote
 ```
 
+## Healthchecks
+
+Healthchecks are defined in `docker-compose.yml` (and, for `redis`/`db`, also in `docker-compose.images.yml`):
+
+| Service | Check | Interval |
+|---------|-------|----------|
+| `vote` | `curl -f http://localhost` (timeout 5s, 3 retries, 10s start period; `docker-compose.yml` only) | 15s |
+| `redis` | [`healthchecks/redis.sh`](healthchecks/redis.sh): `redis-cli ping` must return `PONG` | 5s |
+| `db` | [`healthchecks/postgres.sh`](healthchecks/postgres.sh): `SELECT 1` via `psql` over the container IP | 5s |
+
+`vote` and `worker` wait for `redis`, and `result` and `worker` wait for `db`, to be healthy (`condition: service_healthy`). `result`, `worker`, `docker-stack.yml` and the Kubernetes specs define no healthchecks.
+
+To verify, start the stack and check that the services report `healthy`:
+
+```shell
+docker compose up -d
+docker compose ps
+docker inspect --format '{{json .State.Health}}' $(docker compose ps -q db)
+```
+
 ## Run the app in Kubernetes
 
 The folder k8s-specifications contains the YAML specifications of the Voting App's services.
