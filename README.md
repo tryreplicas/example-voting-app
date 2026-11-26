@@ -97,3 +97,4 @@ uncommitted edit line
 hello from the suite
 hello from the suite
 Status icon test A
+Status icon test B
