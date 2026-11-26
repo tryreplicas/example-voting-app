@@ -1,4 +1,4 @@
-# Example Voting App
+# Example Voting App (variant A)
 
 A simple distributed application running across multiple Docker containers.
 
@@ -15,6 +15,8 @@ docker compose up
 ```
 
 The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
+
+Health check: GET /healthz endpoint on the vote app.
 
 Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
 
@@ -64,3 +66,34 @@ This isn't an example of a properly architected perfectly designed distributed a
 example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
 deal with them in Docker at a basic level.
 Demo change for REP-1072 status sync.
+Edited from the phone
+Android regression test
+hello from the suite
+qa-free 2026-11-02 combo
+hello from the suite
+Board test
+Board test 2
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+hello from the suite
+Changes tab repro: pushed line
+hello from the suite
+pushed line one
+uncommitted edit line
+hello from the suite
+hello from the suite
+Second Replicas test.
