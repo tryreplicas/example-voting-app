@@ -98,3 +98,4 @@ hello from the suite
 hello from the suite
 Status icon test A
 Status icon test B
+Status icon test C1
