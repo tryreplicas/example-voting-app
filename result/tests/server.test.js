@@ -10,9 +10,11 @@ function startServer() {
     query(sql, parameters, callback) { queries.push({ sql, callback }); },
     on(event, callback) { handlers[event] = callback; }
   };
-  const app = { use() {}, get() {} };
+  const routes = {};
+  const app = { use() {}, get(route, handler) { routes[route] = handler; } };
   const modules = {
     express: Object.assign(() => app, { urlencoded() {}, static() {} }),
+    path: require('node:path'),
     pg: { Pool: function() { return pool; } },
     'cookie-parser': () => {},
     http: { Server: () => ({ listen() {} }) },
@@ -32,7 +34,7 @@ function startServer() {
     setTimeout(callback, delay) { timers.push({ callback, delay }); }
   });
   return {
-    queries, timers, scores, errors, handlers,
+    queries, timers, scores, errors, handlers, routes,
     nextPoll() {
       const timer = timers.shift();
       assert.equal(timer.delay, 1000);
@@ -80,6 +82,13 @@ test('recovers from database unavailability at startup', () => {
   server.nextPoll();
   finishQuery(server, [{ vote: 'b', count: '1' }]);
   assert.deepEqual(JSON.parse(server.scores[0].payload), { a: 0, b: 1 });
+});
+
+test('serves the results page without throwing', () => {
+  const server = startServer();
+  const sent = [];
+  server.routes['/']({}, { sendFile(file) { sent.push(file); } });
+  assert.deepEqual(sent, [require('node:path').resolve(__dirname, '../views/index.html')]);
 });
 
 test('handles idle connection errors and continues polling', () => {

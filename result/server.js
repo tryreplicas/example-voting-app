@@ -1,5 +1,6 @@
 // Result service: serves the results page and pushes vote tallies from Postgres to clients over Socket.IO.
 var express = require('express'),
+    path = require('path'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
     app = express(),
