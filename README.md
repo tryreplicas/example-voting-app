@@ -58,6 +58,14 @@ kubectl delete -f k8s-specifications/
 * A [Postgres](https://hub.docker.com/_/postgres/) database backed by a Docker volume
 * A [Node.js](/result) web app which shows the results of the voting in real time
 
+## Contributing
+
+1. [Fork](https://github.com/tryreplicas/example-voting-app/fork) the repo and clone your fork.
+2. Create a branch: `git checkout -b my-change`.
+3. Make your change and run the app with `docker compose up` (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+4. Run the vote service tests, if you touched `vote/`: `cd vote && pip install -r requirements.txt pytest && pytest tests`.
+5. Push the branch to your fork and open a pull request against `main`.
+
 ## Notes
 
 The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
