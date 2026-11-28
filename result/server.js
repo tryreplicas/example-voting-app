@@ -27,10 +27,12 @@ pool.on('error', function(err) {
   console.error("Database connection error: " + err);
 });
 
+var VOTE_COUNTS_QUERY = 'SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote';
+
 getVotes();
 
 function getVotes() {
-  pool.query('SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote', [], function(err, result) {
+  pool.query(VOTE_COUNTS_QUERY, [], function(err, result) {
     if (err) {
       console.error("Error performing query: " + err);
     } else {
@@ -58,6 +60,17 @@ app.use(express.static(__dirname + '/views'));
 
 app.get('/', function (req, res) {
   res.sendFile(path.resolve(__dirname + '/views/index.html'));
+});
+
+app.get('/stats', function (req, res) {
+  pool.query(VOTE_COUNTS_QUERY, [], function(err, result) {
+    if (err) {
+      console.error("Error performing query: " + err);
+      res.status(500).json({ error: 'Could not load vote counts' });
+    } else {
+      res.json(collectVotesFromResult(result));
+    }
+  });
 });
 
 server.listen(port, function () {
