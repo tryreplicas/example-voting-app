@@ -36,15 +36,42 @@ app.controller('statsCtrl', function($scope){
   });
 });
 
-function getPercentages(a, b) {
-  var result = {};
+// Rounding rule for each share's base value. Swap Math.round for Math.ceil
+// (or Math.floor) here to change semantics; largestRemainder keeps the sum at 100.
+function roundShare(value) {
+  return Math.round(value);
+}
 
-  if (a + b > 0) {
-    result.a = Math.round(a / (a + b) * 100);
-    result.b = 100 - result.a;
-  } else {
-    result.a = result.b = 50;
+// Whole-number percentages that always sum to exactly 100 (largest-remainder
+// method): round each share, then add/remove the leftover points one at a time
+// from the shares whose rounding moved them furthest from their exact value.
+function largestRemainder(counts) {
+  var total = counts.reduce(function (sum, n) { return sum + n; }, 0);
+  if (total <= 0) {
+    // No votes yet: split evenly (50/50 for two options).
+    counts = counts.map(function () { return 1; });
+    total = counts.length;
   }
 
-  return result;
+  var exact = counts.map(function (n) { return n / total * 100; });
+  var rounded = exact.map(roundShare);
+  var diff = 100 - rounded.reduce(function (sum, n) { return sum + n; }, 0);
+  var step = diff > 0 ? 1 : -1;
+
+  // Indices ordered by how much each share is owed (or over-allocated).
+  var order = exact.map(function (_, i) { return i; }).sort(function (i, j) {
+    return step * ((exact[j] - rounded[j]) - (exact[i] - rounded[i]));
+  });
+
+  for (var k = 0; diff !== 0; k = (k + 1) % order.length) {
+    rounded[order[k]] += step;
+    diff -= step;
+  }
+
+  return rounded;
+}
+
+function getPercentages(a, b) {
+  var shares = largestRemainder([a, b]);
+  return { a: shares[0], b: shares[1] };
 }
