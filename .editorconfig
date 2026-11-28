@@ -1,0 +1,33 @@
+# EditorConfig: https://editorconfig.org
+# Settings mirror the formatting already used in this repo.
+root = true
+
+# Default: YAML, JSON, JS, HTML, CSS, EJS, csproj and most other files
+# use 2-space indentation.
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Python (vote/, seed-data/) and C# (worker/) use 4 spaces.
+[*.{py,cs}]
+indent_size = 4
+
+# Dockerfile continuation lines are indented with 4 spaces.
+[{Dockerfile,*.Dockerfile}]
+indent_size = 4
+
+# The healthcheck scripts are indented with tabs.
+[healthchecks/*.sh]
+indent_style = tab
+
+# Trailing double spaces are hard line breaks in Markdown.
+[*.md]
+trim_trailing_whitespace = false
+
+# Keep in sync with .gitattributes, which forces CRLF for Windows scripts.
+[*.{cmd,bat}]
+end_of_line = crlf
