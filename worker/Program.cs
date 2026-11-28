@@ -95,8 +95,14 @@ namespace Worker
             var command = connection.CreateCommand();
             command.CommandText = @"CREATE TABLE IF NOT EXISTS votes (
                                         id VARCHAR(255) NOT NULL UNIQUE,
-                                        vote VARCHAR(255) NOT NULL
+                                        vote VARCHAR(255) NOT NULL,
+                                        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
                                     )";
+            command.ExecuteNonQuery();
+
+            // Migration: add created_at to tables created before this column existed.
+            command.CommandText = @"ALTER TABLE votes
+                                    ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DEFAULT now()";
             command.ExecuteNonQuery();
 
             return connection;
