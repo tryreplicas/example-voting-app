@@ -1,0 +1,8 @@
+# Maps alternate names/emails in git history to one canonical identity.
+# Used by `git log` / `git shortlog` (and to generate AUTHORS).
+Dave Tucker <dt@docker.com> <dave@dtucker.co.uk>
+Mano Marks <mmarks@google.com> <mano.marks@gmail.com>
+Sophia Parafina <sophia.parafina@docker.com> sophia parafina <sophia.parafina@docker.com>
+Sophia Parafina <sophia.parafina@docker.com> <spara@users.noreply.github.com>
+Sophia Parafina <sophia.parafina@docker.com> spara <spara@github.com>
+Stefan Scherer <stefan.scherer@docker.com> <scherer_stefan@icloud.com>
