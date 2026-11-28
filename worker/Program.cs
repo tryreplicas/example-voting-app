@@ -22,9 +22,6 @@ namespace Worker
 
                 // Keep alive is not implemented in Npgsql yet. This workaround was recommended:
                 // https://github.com/npgsql/npgsql/issues/1214#issuecomment-235828359
-                var keepAliveCommand = pgsql.CreateCommand();
-                keepAliveCommand.CommandText = "SELECT 1";
-
                 var definition = new { vote = "", voter_id = "" };
                 while (true)
                 {
@@ -38,24 +35,41 @@ namespace Worker
                         redis = redisConn.GetDatabase();
                     }
                     string json = redis.ListLeftPopAsync("votes").Result;
-                    if (json != null)
+                    try
                     {
-                        var vote = JsonConvert.DeserializeAnonymousType(json, definition);
-                        Console.WriteLine($"Processing vote for '{vote.vote}' by '{vote.voter_id}'");
                         // Reconnect DB if down
                         if (!pgsql.State.Equals(System.Data.ConnectionState.Open))
                         {
                             Console.WriteLine("Reconnecting DB");
                             pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
                         }
-                        else
-                        { // Normal +1 vote requested
+
+                        if (json != null)
+                        {
+                            var vote = JsonConvert.DeserializeAnonymousType(json, definition);
+                            Console.WriteLine($"Processing vote for '{vote.vote}' by '{vote.voter_id}'");
                             UpdateVote(pgsql, vote.voter_id, vote.vote);
                         }
+                        else
+                        {
+                            using (var keepAliveCommand = pgsql.CreateCommand())
+                            {
+                                keepAliveCommand.CommandText = "SELECT 1";
+                                keepAliveCommand.ExecuteNonQuery();
+                            }
+                        }
                     }
-                    else
+                    catch (DbException ex)
                     {
-                        keepAliveCommand.ExecuteNonQuery();
+                        // Postgres restarted or dropped the connection. Put the vote back
+                        // so it is counted after reconnecting, instead of exiting.
+                        Console.Error.WriteLine($"Database error, reconnecting: {ex.Message}");
+                        if (json != null)
+                        {
+                            redis.ListLeftPush("votes", json);
+                        }
+                        pgsql.Dispose();
+                        pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
                     }
                 }
             }
