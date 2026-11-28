@@ -1,0 +1,6 @@
+# Default owners for everything in the repo.
+# Source: MAINTAINERS. Update this file when maintainers change.
+*                       @BretFisher @mikesir87
+
+# CI and automation
+/.github/               @BretFisher @mikesir87
