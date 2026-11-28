@@ -5,10 +5,15 @@ import socket
 import random
 import json
 import logging
+import time
 
 option_a = os.getenv('OPTION_A', "Cats")
 option_b = os.getenv('OPTION_B', "Dogs")
 hostname = socket.gethostname()
+
+# Maximum votes accepted per client IP in each fixed window.
+VOTE_RATE_LIMIT = 10
+VOTE_RATE_WINDOW_SECONDS = 60
 
 app = Flask(__name__)
 
@@ -23,6 +28,16 @@ def get_redis():
     return g.redis
 
 
+def vote_rate_limited(redis, ip):
+    # Counters live in Redis so the limit holds across all gunicorn workers.
+    window = int(time.time() // VOTE_RATE_WINDOW_SECONDS)
+    key = f'ratelimit:vote:{ip}:{window}'
+    count = redis.incr(key)
+    if count == 1:
+        redis.expire(key, VOTE_RATE_WINDOW_SECONDS)
+    return count > VOTE_RATE_LIMIT
+
+
 @app.route("/", methods=['POST', 'GET'])
 def hello():
     voter_id = request.cookies.get('voter_id')
@@ -33,6 +48,11 @@ def hello():
 
     if request.method == 'POST':
         redis = get_redis()
+        if vote_rate_limited(redis, request.remote_addr):
+            retry_after = VOTE_RATE_WINDOW_SECONDS - int(time.time()) % VOTE_RATE_WINDOW_SECONDS
+            resp = make_response('Too many votes, please wait a minute and try again.', 429)
+            resp.headers['Retry-After'] = str(retry_after)
+            return resp
         vote = request.form['vote']
         app.logger.info('Received vote for %s', vote)
         data = json.dumps({'voter_id': voter_id, 'vote': vote})
