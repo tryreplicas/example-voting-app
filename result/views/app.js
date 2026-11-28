@@ -7,6 +7,10 @@ var bg2 = document.getElementById('background-stats-2');
 app.controller('statsCtrl', function($scope){
   $scope.aPercent = 50;
   $scope.bPercent = 50;
+  $scope.aVotes = 0;
+  $scope.bVotes = 0;
+  $scope.aShare = 0;
+  $scope.bShare = 0;
 
   var updateScores = function(){
     socket.on('scores', function (json) {
@@ -23,6 +27,11 @@ app.controller('statsCtrl', function($scope){
          $scope.aPercent = percentages.a;
          $scope.bPercent = percentages.b;
          $scope.total = a + b;
+         $scope.aVotes = a;
+         $scope.bVotes = b;
+         // getPercentages falls back to 50/50 for the bars; show 0% with no votes
+         $scope.aShare = $scope.total > 0 ? percentages.a : 0;
+         $scope.bShare = $scope.total > 0 ? percentages.b : 0;
        });
     });
   };
