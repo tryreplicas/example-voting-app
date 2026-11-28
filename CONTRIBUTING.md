@@ -39,3 +39,9 @@ docker compose --profile seed up -d
 - `worker/`: .NET worker that moves votes from Redis into Postgres.
 - `result/`: Node.js web app that shows results in real time from Postgres.
 - Redis and Postgres run from public images, and Postgres stores its data in the `db-data` volume.
+
+## Branches and pull requests
+
+- Branch from `main` and open your pull request against `main`. Use a short, descriptive branch name with a type prefix, such as `docs/compose-notes` or `fix/result-percentages`.
+- Keep each pull request to one change, and say in the description what changed and how you checked it (for example, `docker compose up --build` and a vote at `localhost:8080`).
+- Changes under `vote/`, `result/`, or `worker/` trigger that service's Docker build check in GitHub Actions. Make sure it passes before asking for review.
