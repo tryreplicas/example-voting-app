@@ -99,6 +99,9 @@ namespace Worker
                                     )";
             command.ExecuteNonQuery();
 
+            command.CommandText = "CREATE INDEX IF NOT EXISTS votes_vote_idx ON votes (vote)";
+            command.ExecuteNonQuery();
+
             return connection;
         }
 
