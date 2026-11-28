@@ -12,6 +12,9 @@ namespace Worker
 {
     public class Program
     {
+        // Max consecutive failed redis connection attempts before exiting
+        private const int MaxRedisRetries = 5;
+
         public static int Main(string[] args)
         {
             try
@@ -34,10 +37,26 @@ namespace Worker
                     // Reconnect redis if down
                     if (redisConn == null || !redisConn.IsConnected) {
                         Console.WriteLine("Reconnecting Redis");
+                        redisConn?.Dispose();
                         redisConn = OpenRedisConnection("redis");
                         redis = redisConn.GetDatabase();
                     }
-                    string json = redis.ListLeftPopAsync("votes").Result;
+
+                    string json;
+                    try
+                    {
+                        json = redis.ListLeftPop("votes");
+                    }
+                    catch (Exception ex) when (IsRedisConnectionError(ex))
+                    {
+                        // Redis dropped mid-run: nothing was popped, so no vote is lost.
+                        // Force a reconnect (with backoff) on the next iteration.
+                        Console.Error.WriteLine($"Lost connection to redis: {ex.GetType().Name}: {ex.Message}");
+                        redisConn.Dispose();
+                        redisConn = null;
+                        continue;
+                    }
+
                     if (json != null)
                     {
                         var vote = JsonConvert.DeserializeAnonymousType(json, definition);
@@ -47,11 +66,11 @@ namespace Worker
                         {
                             Console.WriteLine("Reconnecting DB");
                             pgsql = OpenDbConnection("Server=db;Username=postgres;Password=postgres;");
+                            keepAliveCommand = pgsql.CreateCommand();
+                            keepAliveCommand.CommandText = "SELECT 1";
                         }
-                        else
-                        { // Normal +1 vote requested
-                            UpdateVote(pgsql, vote.voter_id, vote.vote);
-                        }
+                        // Normal +1 vote requested
+                        UpdateVote(pgsql, vote.voter_id, vote.vote);
                     }
                     else
                     {
@@ -70,7 +89,7 @@ namespace Worker
         {
             NpgsqlConnection connection;
 
-            while (true)
+            for (var attempt = 1; ; attempt++)
             {
                 try
                 {
@@ -78,15 +97,11 @@ namespace Worker
                     connection.Open();
                     break;
                 }
-                catch (SocketException)
+                catch (Exception ex) when (ex is SocketException || ex is DbException)
                 {
-                    Console.Error.WriteLine("Waiting for db");
-                    Thread.Sleep(1000);
-                }
-                catch (DbException)
-                {
-                    Console.Error.WriteLine("Waiting for db");
-                    Thread.Sleep(1000);
+                    var delay = RetryDelay(attempt);
+                    Console.Error.WriteLine($"Waiting for db: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), retrying in {delay.TotalSeconds:0.#}s");
+                    Thread.Sleep(delay);
                 }
             }
 
@@ -104,28 +119,45 @@ namespace Worker
 
         private static ConnectionMultiplexer OpenRedisConnection(string hostname)
         {
-            // Use IP address to workaround https://github.com/StackExchange/StackExchange.Redis/issues/410
-            var ipAddress = GetIp(hostname);
-            Console.WriteLine($"Found redis at {ipAddress}");
-
-            while (true)
+            for (var attempt = 1; ; attempt++)
             {
                 try
                 {
-                    Console.Error.WriteLine("Connecting to redis");
-                    return ConnectionMultiplexer.Connect(ipAddress);
+                    // Resolve on every attempt: the redis container may come back with a new IP.
+                    // Use IP address to workaround https://github.com/StackExchange/StackExchange.Redis/issues/410
+                    var ipAddress = GetIp(hostname);
+                    Console.WriteLine($"Found redis at {ipAddress}");
+                    Console.Error.WriteLine($"Connecting to redis (attempt {attempt})");
+                    var connection = ConnectionMultiplexer.Connect(ipAddress);
+                    Console.Error.WriteLine("Connected to redis");
+                    return connection;
                 }
-                catch (RedisConnectionException)
+                catch (Exception ex) when (ex is SocketException || ex is InvalidOperationException || IsRedisConnectionError(ex))
                 {
-                    Console.Error.WriteLine("Waiting for redis");
-                    Thread.Sleep(1000);
+                    if (attempt >= MaxRedisRetries)
+                    {
+                        Console.Error.WriteLine($"Giving up on redis: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), reached max of {MaxRedisRetries} attempts, exiting");
+                        Environment.Exit(1);
+                    }
+                    var delay = RetryDelay(attempt);
+                    Console.Error.WriteLine($"Waiting for redis: attempt {attempt} failed ({ex.GetType().Name}: {ex.Message}), retrying in {delay.TotalSeconds:0.#}s");
+                    Thread.Sleep(delay);
                 }
             }
         }
 
+        // Exponential backoff for redis and db retries: 0.5s, 1s, 2s, 4s, ... capped at 30s
+        private static TimeSpan RetryDelay(int attempt)
+            => TimeSpan.FromMilliseconds(Math.Min(500 * Math.Pow(2, Math.Min(attempt - 1, 16)), 30000));
+
+        private static bool IsRedisConnectionError(Exception ex)
+            => ex is RedisConnectionException
+                || ex is RedisTimeoutException
+                || ex is ObjectDisposedException
+                || (ex is AggregateException agg && agg.InnerExceptions.Any(IsRedisConnectionError));
+
         private static string GetIp(string hostname)
-            => Dns.GetHostEntryAsync(hostname)
-                .Result
+            => Dns.GetHostEntry(hostname)
                 .AddressList
                 .First(a => a.AddressFamily == AddressFamily.InterNetwork)
                 .ToString();
