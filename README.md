@@ -18,7 +18,7 @@ The `vote` app will be running at [http://localhost:8080](http://localhost:8080)
 
 Health check: GET /healthz endpoint on the vote app.
 
-Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
+Alternatively, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
 
 ```shell
 docker swarm init
