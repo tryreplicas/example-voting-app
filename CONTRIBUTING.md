@@ -39,3 +39,26 @@ docker compose --profile seed up -d
 - `worker/`: .NET worker that moves votes from Redis into Postgres.
 - `result/`: Node.js web app that shows results in real time from Postgres.
 - Redis and Postgres run from public images, and Postgres stores its data in the `db-data` volume.
+
+## Running tests
+
+- `vote`: `cd vote && pip install -r requirements.txt pytest && python -m pytest tests`
+- `result` unit tests: `cd result && npm install && npm test`
+- `result` end-to-end test (votes through `vote` and checks `result`): `cd result && docker compose -f docker-compose.test.yml up --build --exit-code-from sut`
+
+GitHub Actions builds the `vote`, `result`, and `worker` images on every pull request that touches their folders, so make sure `docker compose build` succeeds before you push.
+
+## Branches and pull requests
+
+- Branch from `main` with a short, descriptive kebab-case name, such as `add-healthz-endpoint` or `docs/readme-run-locally`.
+- Keep each pull request to one change. Don't bundle unrelated fixes.
+- Write commit messages and PR titles in the imperative mood ("Add index to votes table"). A conventional prefix like `docs:`, `fix:`, or `feat(result):` is welcome but not required.
+- In the PR description, say what changed, why, and how you tested it. Add a screenshot for visible UI changes.
+- Open pull requests against `main`. They are squash-merged once CI passes and a maintainer (see `MAINTAINERS`) approves.
+
+## Code style
+
+- Follow each service's existing conventions: PEP 8 for Python in `vote/`, the current JavaScript style in `result/` (CommonJS, `var`/callbacks as in `server.js`), and standard .NET conventions in `worker/`.
+- Keep the app simple. It's a teaching example, so prefer clear code over clever abstractions, and don't add new services or dependencies without a good reason.
+- If you change ports, service names, or credentials, update `docker-compose.yml`, `docker-stack.yml`, and `k8s-specifications/` together so they stay in sync.
+- Shell scripts use LF line endings (enforced by `.gitattributes`).
